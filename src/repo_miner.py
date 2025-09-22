@@ -14,6 +14,49 @@ import argparse
 import pandas as pd
 from github import Github
 
+def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
+  """
+  Fetch up to `max_commits` from the specified GitHub repository.
+  Returns a DataFrame with columns: sha, author, email, date, message.
+  """
+  # 1) Read GitHub token from environment
+  # TODO
+
+  # 2) Initialize GitHub client and get the repo
+  gitHubClient = Github()
+
+  # repo_name should have the following format : 'owner/repo'
+  components = repo_name.split('/')
+  repo = gitHubClient.get_user(components[0]).get_repo(components[1])
+
+  # 3) Fetch commit objects (paginated by PyGitHub)
+  commits = repo.get_commits()
+
+  # 4) Normalize each commit into a record dict
+  data = []
+
+  numberOfCommitsChecked = 0
+
+  for commit in commits :
+    commit_dict = {}
+    commit_dict["sha"] = commit.sha
+    commit_dict["author"] = commit.author.login
+    commit_dict["email"] = commit.author.email
+    commit_dict["date"] = commit.author.date
+    commit_dict["message"] = commit.author.message
+
+    data.append(commit_dict)
+
+    numberOfCommitsChecked += 1
+
+    if numberOfCommitsChecked >= max_commits :
+      break
+
+  # 5) Build DataFrame from records
+  dataFrame = pd.DataFrame(data)
+
+  return dataFrame
+
 def main():
   """
   Parse command-line arguments and dispatch to sub-commands.
@@ -34,10 +77,10 @@ def main():
   args = parser.parse_args()
 
   # Dispatch based on selected command
-  #if args.command == "fetch-commits":
-    #df = fetch_commits(args.repo, args.max_commits)
-    #df.to_csv(args.out, index=False)
-    #print(f"Saved {len(df)} commits to {args.out}")
+  if args.command == "fetch-commits":
+    df = fetch_commits(args.repo, args.max_commits)
+    df.to_csv(args.out, index=False)
+    print(f"Saved {len(df)} commits to {args.out}")
 
 if __name__ == "__main__":
   main()
