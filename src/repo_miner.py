@@ -19,11 +19,12 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
   Fetch up to `max_commits` from the specified GitHub repository.
   Returns a DataFrame with columns: sha, author, email, date, message.
   """
+
   # 1) Read GitHub token from environment
-  # TODO
+  gitHubToken = os.environ.get("GITHUB_TOKEN")
 
   # 2) Initialize GitHub client and get the repo
-  gitHubClient = Github()
+  gitHubClient = Github(gitHubToken)
 
   # repo_name should have the following format : 'owner/repo'
   components = repo_name.split('/')
@@ -40,16 +41,16 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
   for commit in commits :
     commit_dict = {}
     commit_dict["sha"] = commit.sha
-    commit_dict["author"] = commit.author.login
-    commit_dict["email"] = commit.author.email
-    commit_dict["date"] = commit.author.date
-    commit_dict["message"] = commit.author.message
+    commit_dict["author"] = commit.commit.author.name
+    commit_dict["email"] = commit.commit.author.email
+    commit_dict["date"] = commit.commit.author.date
+    commit_dict["message"] = (commit.commit.message) .split('\n') [0]
 
     data.append(commit_dict)
 
     numberOfCommitsChecked += 1
 
-    if numberOfCommitsChecked >= max_commits :
+    if numberOfCommitsChecked == max_commits :
       break
 
   # 5) Build DataFrame from records
