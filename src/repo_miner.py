@@ -12,7 +12,7 @@ Sub-commands:
 import os
 import argparse
 import pandas as pd
-from github import Github
+from github import Github, Auth
 
 def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
   """
@@ -24,11 +24,8 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
   gitHubToken = os.environ.get("GITHUB_TOKEN")
 
   # 2) Initialize GitHub client and get the repo
-  gitHubClient = Github(gitHubToken)
-
-  # repo_name should have the following format : 'owner/repo'
-  components = repo_name.split('/')
-  repo = gitHubClient.get_user(components[0]).get_repo(components[1])
+  gitHubClient = Github(auth=Auth.Token(gitHubToken))
+  repo = gitHubClient.get_repo(repo_name)
 
   # 3) Fetch commit objects (paginated by PyGitHub)
   commits = repo.get_commits()
@@ -38,20 +35,21 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
 
   numberOfCommitsChecked = 0
 
-  for commit in commits :
-    commit_dict = {}
-    commit_dict["sha"] = commit.sha
-    commit_dict["author"] = commit.commit.author.name
-    commit_dict["email"] = commit.commit.author.email
-    commit_dict["date"] = commit.commit.author.date
-    commit_dict["message"] = (commit.commit.message) .split('\n') [0]
+  if max_commits == None or max_commits > 0 :
+    for commit in commits :
+      commit_dict = {}
+      commit_dict["sha"] = commit.sha
+      commit_dict["author"] = commit.commit.author.name
+      commit_dict["email"] = commit.commit.author.email
+      commit_dict["date"] = commit.commit.author.date
+      commit_dict["message"] = (commit.commit.message) .split('\n') [0]
 
-    data.append(commit_dict)
+      data.append(commit_dict)
 
-    numberOfCommitsChecked += 1
+      numberOfCommitsChecked += 1
 
-    if numberOfCommitsChecked == max_commits :
-      break
+      if numberOfCommitsChecked == max_commits :
+        break
 
   # 5) Build DataFrame from records
   dataFrame = pd.DataFrame(data)
