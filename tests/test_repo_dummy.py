@@ -75,6 +75,7 @@ def patch_env_and_github(monkeypatch):
 gh_instance = DummyGithub("fake-token")
 
 # --- Tests for fetch_commits ---
+
 # An example test case
 def test_fetch_commits_basic(monkeypatch):
     # Setup dummy commits
