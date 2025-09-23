@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 repo_miner.py
 

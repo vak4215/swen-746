@@ -1,10 +1,14 @@
-# tests/test_repo_miner.py
+"""
+tests/test_repo_miner_dummy.py
+
+A set of tests for the repo_miner class that utilize dummy placeholder objects
+"""
 
 import os
 import pandas as pd
 import pytest
 from datetime import datetime, timedelta
-from src.repo_miner import fetch_commits #, fetch_issues, merge_and_summarize
+from src.repo_miner import fetch_commits
 
 # --- Helpers for dummy GitHub API objects ---
 
@@ -76,7 +80,7 @@ gh_instance = DummyGithub("fake-token")
 
 # --- Tests for fetch_commits ---
 
-# An example test case
+# A basic test case
 def test_fetch_commits_basic(monkeypatch):
     # Setup dummy commits
     now = datetime.now()
@@ -93,13 +97,12 @@ def test_fetch_commits_basic(monkeypatch):
     assert len(df) == 2
     assert df.iloc[0]["message"] == "Initial commit"
 
+# Test that fetch_commits respects the max_commits limit.
 def test_fetch_commits_limit(monkeypatch):
-    # More commits than max_commits
-    # Test that fetch_commits respects the max_commits limit.
-
-    # Setup dummy commits
+    # Setup dummy placeholders
     now = datetime.now()
 
+    # Set up more commits than max_commits
     commits = [
         DummyCommit("sha1", "Alice", "a@example.com", now, "Initial commit\nDetails"),
         DummyCommit("sha2", "Bob", "b@example.com", now - timedelta(days=1), "Bug fix")
@@ -112,9 +115,9 @@ def test_fetch_commits_limit(monkeypatch):
     assert len(df) == 1
     assert df.iloc[0]["message"] == "Initial commit"
 
+# Test that fetch_commits returns empty DataFrame when no commits exist.
 def test_fetch_commits_empty(monkeypatch):
-    # Test that fetch_commits returns empty DataFrame when no commits exist.
-
+    # Setup dummy placeholders
     gh_instance._repo = DummyRepo([], [])
     df = fetch_commits("any/repo")
 

@@ -20,5 +20,8 @@ The project now includes the following :
 - Pytest cases for the fetch_commits function using vcrpy to access the real repo octocat/Hello-World
 
 The src/repo_miner.py file is accessible via CLI (in the following command, repo_miner is under src at the project root):
-    python -m src.repo_miner fetch-commits --repo owner/repo [--max 100] --out commits.csv
+    python -m src.repo_miner fetch-commits --repo owner/repo [--max 100] --out src/output/commits.csv
 
+Example command :
+    python -m src.repo_miner fetch-commits --repo vak4215/swen-746 --out src/output/commits.csv
+    python -m src.repo_miner fetch-commits --repo octocat/Hello-World --out src/output/hello_world_commits.csv

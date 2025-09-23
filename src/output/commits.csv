@@ -1,0 +1,10 @@
+sha,author,email,date,message
+24c762ce87db4f94cbc734373cc91aafbee7ea80,VeronikaK,108557776+vak4215@users.noreply.github.com,2025-09-17 17:17:13+00:00,Merge pull request #1 from vak4215/rm0-dev
+2a9a7b13478fb839418f7bd26769da21f295dd9e,Veronika Kirievskaya,vak4215@rit.edu,2025-09-17 17:10:23+00:00,trying to fix yml
+f4f8036d4a1063bf1e6301246f009784a152d15e,Veronika Kirievskaya,vak4215@rit.edu,2025-09-17 17:03:37+00:00,adding a missing piece to the yml
+c6f2823b92848794f11f4740714a46e22ef07608,Veronika Kirievskaya,vak4215@rit.edu,2025-09-17 16:58:52+00:00,finalizing homework 2
+d9a23f3f15e386459b64ccba089914eb67be418d,Veronika Kirievskaya,vak4215@rit.edu,2025-09-17 16:52:56+00:00,Add a GitHub Actions CI workflow that runs pytest
+84a6324c14f902c36f0929d1c79c821ec420ad02,Veronika Kirievskaya,vak4215@rit.edu,2025-09-17 16:35:33+00:00,Create src/repo_miner.py with an empty main
+a6a01bcfaf2531b7396fe8ca6d48c640a369142d,Veronika Kirievskaya,vak4215@rit.edu,2025-09-17 16:33:10+00:00,Add a requirements.txt
+b6141c739aff34279f76b855bccee012eb25a92a,Veronika Kirievskaya,vak4215@rit.edu,2025-09-17 16:30:31+00:00,set up virtual env
+c83a5f4aa91e9e58aa69bc6ca4c70e9edf65916f,VeronikaK,108557776+vak4215@users.noreply.github.com,2025-09-17 16:14:21+00:00,Initial commit
