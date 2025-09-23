@@ -12,14 +12,15 @@ from src.repo_miner import fetch_commits #, fetch_issues, merge_and_summarize
 test_vcr = vcr.VCR(
     cassette_library_dir="tests/cassettes",
     record_mode="new_episodes",
-    match_on=["uri", "method"]
+    match_on=["uri", "method"],
+    filter_headers=["authorization"]
 )
 
 # --- Test against the well-known small repo octocat/Hello-World
 
 def test_fetch_commits_hello_world_repo():
     # Test a basic test against the real repo
-    
+
     with test_vcr.use_cassette("hello_world_commits.yaml"):
         df = fetch_commits("octocat/Hello-World", max_commits=20)
 

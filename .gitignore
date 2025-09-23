@@ -2,4 +2,3 @@ __pycache__/
 vEnv-746
 __init__.py
 .pytest_cache
-tests/cassettes
