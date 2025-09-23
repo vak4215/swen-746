@@ -8,7 +8,7 @@ The project skeleton includes the following :
 - a top‐level README.md stub
 - a GitHub Actions CI workflow that runs pytest
 
-## Commit Fetcher (Tag rm1 on 09/17)
+## Commit Fetcher (Tag rm1 on 09/22)
 The project now includes the following :
 - The src/repo_miner.py file now contains an implementation of the fetch_commits(repo_full_name: str, max_commits: int=None) -> pd.DataFrame function which :
     - Reads GITHUB_TOKEN from the environment.
