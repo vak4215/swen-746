@@ -23,12 +23,13 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
   # 1) Read GitHub token from environment
   gitHubToken = os.environ.get("GITHUB_TOKEN")
 
-  # temp. debugging only
-  print("GITHUB_TOKEN is set:", bool(os.environ.get("GITHUB_TOKEN")))
-
   # 2) Initialize GitHub client and get the repo
   gitHubClient = Github(auth=Auth.Token(gitHubToken))
   repo = gitHubClient.get_repo(repo_name)
+
+  # temp. debugging only
+  print("repo name : ", repo_name)
+  print("repo : ", bool(repo))
 
   # 3) Fetch commit objects (paginated by PyGitHub)
   commits = repo.get_commits()
