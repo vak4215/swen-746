@@ -11,7 +11,7 @@ from src.repo_miner import fetch_commits #, fetch_issues, merge_and_summarize
 
 test_vcr = vcr.VCR(
     cassette_library_dir="tests/cassettes",
-    record_mode="new_episodes",
+    record_mode="all",
     match_on=["uri", "method"],
     filter_headers=["authorization"]
 )
