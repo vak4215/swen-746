@@ -56,38 +56,55 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
   return dataFrame
 
 def fetch_issues(repo_name: str, state: str = "all", max_issues: int = None) -> pd.DataFrame:
-    """
+  """
     Fetch up to `max_issues` from the specified GitHub repository (issues only).
     Returns a DataFrame with columns: id, number, title, user, state, created_at, closed_at, comments.
-    """
-    # 1) Read GitHub token
-    # TODO
+  """
 
-    # 2) Initialize client and get the repo
-    # TODO
+  # 1) Read GitHub token from environment
+  gitHubToken = os.environ.get("GITHUB_TOKEN")
 
-    # 3) Fetch issues, filtered by state ('all', 'open', 'closed')
-    issues = repo.get_issues(state=state)
+  # 2) Initialize GitHub client and get the repo
+  gitHubClient = Github(auth=Auth.Token(gitHubToken))
+  repo = gitHubClient.get_repo(repo_name)
 
-    # 4) Normalize each issue (skip PRs)
-    records = []
-    for idx, issue in enumerate(issues):
-        if max_issues and idx >= max_issues:
-            break
-        # Skip pull requests
-        # TODO
+  # 3) Fetch issues, filtered by state ('all', 'open', 'closed')
+  issues = repo.get_issues(state=state)
 
-        # Append records
-        # TODO
+  # 4) Normalize each issue (skip PRs)
+  records = []
+  for idx, issue in enumerate(issues):
+    if max_issues and idx >= max_issues:
+      break
+      
+    # Skip pull requests
+    if issue.pull_request :
+      continue
 
-    # 5) Build DataFrame
-    # TODO: return statement
+    # Append records
+    issue_dict = {}
+    issue_dict["id"] = issue.id
+    issue_dict["number"] = issue.number
+    issue_dict["title"] = issue.title
+    issue_dict["user"] = issue.user.login
+    issue_dict["state"] = issue.state
+    issue_dict["created_at"] = issue.created_at
+    issue_dict["closed_at"] = issue.closed_at
+    issue_dict["comments"] = issue.comments
+
+    records.append(issue_dict)
+
+  # 5) Build DataFrame
+  dataFrame = pd.DataFrame(records)
+
+  return dataFrame
 
 
 def main():
   """
-  Parse command-line arguments and dispatch to sub-commands.
+    Parse command-line arguments and dispatch to sub-commands.
   """
+
   parser = argparse.ArgumentParser(
     prog="repo_miner",
     description="Fetch GitHub commits/issues and summarize them"
@@ -116,11 +133,13 @@ def main():
   if args.command == "fetch-commits":
     df = fetch_commits(args.repo, args.max_commits)
     df.to_csv(args.out, index=False)
+
     print(f"Saved {len(df)} commits to {args.out}")
 
   elif args.command == "fetch-issues":
     df = fetch_issues(args.repo, args.state, args.max_issues)
     df.to_csv(args.out, index=False)
+    
     print(f"Saved {len(df)} issues to {args.out}")
 
 if __name__ == "__main__":
