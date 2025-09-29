@@ -1,14 +1,12 @@
-"""
-tests/test_repo_miner_dummy.py
-
-A set of tests for the repo_miner class that utilize dummy placeholder objects
-"""
-
-import os
-import pandas as pd
 import pytest
 from datetime import datetime, timedelta
 from src.repo_miner import fetch_commits
+
+"""
+    tests/test_fetch_commits_dummy.py
+
+    A set of tests for the repo_miner class that utilize dummy placeholder objects
+"""
 
 # --- Helpers for dummy GitHub API objects ---
 
