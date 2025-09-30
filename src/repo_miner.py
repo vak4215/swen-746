@@ -112,7 +112,6 @@ def fetch_issues(repo_name: str, state: str = "all", max_issues: int = None) -> 
 
   return dataFrame
 
-
 def main():
   """
     Parse command-line arguments and dispatch to sub-commands.
