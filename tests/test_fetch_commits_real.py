@@ -1,15 +1,11 @@
-"""
-tests/test_repo_miner_real.py
-
-A set of tests for the repo_miner class that utilize vcrpy to hit real APIs
-"""
-
-import os
-import pandas as pd
-import pytest
 import vcr
-from datetime import datetime, timedelta
-from src.repo_miner import fetch_commits #, fetch_issues, merge_and_summarize
+from src.repo_miner import fetch_commits
+
+"""
+    tests/test_fetch_commits_real.py
+
+    A set of tests for the repo_miner class that utilize vcrpy to hit real APIs
+"""
 
 # --- Set Up the VCR --- 
 
