@@ -142,15 +142,22 @@ def merge_and_summarize(commits_df: pd.DataFrame, issues_df: pd.DataFrame) -> No
     else :
       committers[committer] = 1
 
+  upper_limit = 5 if len(committers) >= 5 else len(committers)
   sorted_items = sorted(committers.items(), key=lambda item: item[1])
   sorted_committers = list(sorted_items)
 
   print("Top 5 Committers : ", end="")
-  print(sorted_committers[0], end=", ")
+
+  for i in range(upper_limit -1) :
+    print(sorted_committers[i], end=", ")
+
+  print(sorted_committers[upper_limit -1])
+
+  """ print(sorted_committers[0], end=", ")
   print(sorted_committers[1], end=", ")
   print(sorted_committers[2], end=", ")
   print(sorted_committers[3], end=", ")
-  print(sorted_committers[4], end="\n")
+  print(sorted_committers[4], end="\n") """
 
   # 3) Calculate issue close rate
   number_of_closed_issues = 0
@@ -166,7 +173,7 @@ def merge_and_summarize(commits_df: pd.DataFrame, issues_df: pd.DataFrame) -> No
 
   rate = (number_of_closed_issues / number_of_issues) *100
 
-  print("Issue Close Rate : " + rate + "%")
+  print("Issue Close Rate : " + str(rate) + "%")
 
   # 4) Compute average open duration (days) for closed issues
   issues = issues[issues['state'] == 'closed']
@@ -175,14 +182,14 @@ def merge_and_summarize(commits_df: pd.DataFrame, issues_df: pd.DataFrame) -> No
   count_of_durations = 0
 
   for row_tuple in issues.itertuples():
-    duration = (row_tuple.closed - row_tuple.created).days
+    duration = (row_tuple.closed_at - row_tuple.created_at).days
 
     sum_of_durations += duration
     count_of_durations += 1
 
   average = sum_of_durations / count_of_durations
 
-  print("Average Open Duration for Closed Issues : " + average)
+  print("Average Open Duration for Closed Issues : " + str(average))
 
 def main():
   """
@@ -230,8 +237,7 @@ def main():
     df.to_csv(args.out, index=False)
 
     print(f"Saved {len(df)} issues to {args.out}")
-
-  if args.command == "summarize":
+  elif args.command == "summarize":
     # Read CSVs into DataFrames
     commits_df = pd.read_csv(args.commits)
     issues_df  = pd.read_csv(args.issues)

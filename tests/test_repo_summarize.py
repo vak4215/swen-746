@@ -1,10 +1,11 @@
-# tests/test_repo_miner.py
+# tests/test_repo_summarize.py
 
 import os
 import pandas as pd
 import pytest
 from datetime import datetime, timedelta
 from src.repo_miner import fetch_commits, fetch_issues, merge_and_summarize
+import src.repo_miner as rm
 
 # --- Helpers for dummy GitHub API objects ---
 
@@ -58,6 +59,7 @@ class DummyRepo:
 class DummyGithub:
     def __init__(self, token):
         assert token == "fake-token"
+
     def get_repo(self, repo_name):
         # ignore repo_name; return repo set in test fixture
         return self._repo
@@ -66,11 +68,11 @@ class DummyGithub:
 def patch_env_and_github(monkeypatch):
     # Set fake token
     monkeypatch.setenv("GITHUB_TOKEN", "fake-token")
-    # Patch Github class
-    import src.repo_miner as rm
-    monkeypatch.setattr(rm, "Github", lambda token: gh_instance)
-    yield
 
+    # Patch Github class
+    monkeypatch.setattr("src.repo_miner.Github", lambda *args, **kwargs: gh_instance)
+    yield
+    
 # Helper global placeholder
 gh_instance = DummyGithub("fake-token")
 
