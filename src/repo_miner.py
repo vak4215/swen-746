@@ -153,8 +153,36 @@ def merge_and_summarize(commits_df: pd.DataFrame, issues_df: pd.DataFrame) -> No
   print(sorted_committers[4], end="\n")
 
   # 3) Calculate issue close rate
+  number_of_closed_issues = 0
+  number_of_issues = 0
+
+  for row_tuple in issues.itertuples():
+    state = row_tuple.state
+
+    if state == "closed" :
+      number_of_closed_issues += 1
+    
+    number_of_issues += 1
+
+  rate = (number_of_closed_issues / number_of_issues) *100
+
+  print("Issue Close Rate : " + rate + "%")
 
   # 4) Compute average open duration (days) for closed issues
+  issues = issues[issues['state'] == 'closed']
+
+  sum_of_durations = 0
+  count_of_durations = 0
+
+  for row_tuple in issues.itertuples():
+    duration = (row_tuple.closed - row_tuple.created).days
+
+    sum_of_durations += duration
+    count_of_durations += 1
+
+  average = sum_of_durations / count_of_durations
+
+  print("Average Open Duration for Closed Issues : " + average)
 
 def main():
   """
