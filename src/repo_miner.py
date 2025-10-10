@@ -121,16 +121,36 @@ def merge_and_summarize(commits_df: pd.DataFrame, issues_df: pd.DataFrame) -> No
     - Issue close rate (closed/total)
     - Average open duration for closed issues (in days)
   """
+
   # Copy to avoid modifying original data
   commits = commits_df.copy()
   issues  = issues_df.copy()
 
   # 1) Normalize date/time columns to pandas datetime
   commits['date']      = pd.to_datetime(commits['date'], errors='coerce')
-  # TODO issues['created_at'] = ...
-  # issues['closed_at']  = ...
+  issues['created_at'] = pd.to_datetime(issues['created_at'], errors='coerce')
+  issues['closed_at']  = pd.to_datetime(issues['closed_at'], errors='coerce')
 
   # 2) Top 5 committers
+  committers = {}
+
+  for row_tuple in commits.itertuples():
+    committer = row_tuple.author
+
+    if committer in committers :
+      committers[committer] += 1
+    else :
+      committers[committer] = 1
+
+  sorted_items = sorted(committers.items(), key=lambda item: item[1])
+  sorted_committers = list(sorted_items)
+
+  print("Top 5 Committers : ", end="")
+  print(sorted_committers[0], end=", ")
+  print(sorted_committers[1], end=", ")
+  print(sorted_committers[2], end=", ")
+  print(sorted_committers[3], end=", ")
+  print(sorted_committers[4], end="\n")
 
   # 3) Calculate issue close rate
 
