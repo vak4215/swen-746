@@ -181,7 +181,7 @@ def merge_and_summarize(commits_df: pd.DataFrame, issues_df: pd.DataFrame) -> No
 
   average = sum_of_durations / count_of_durations
 
-  print("Average Open Duration for Closed Issues : " + str(average))
+  print("\nAverage Open Duration for Closed Issues : " + str(average))
 
 def main():
   """

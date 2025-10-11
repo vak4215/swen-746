@@ -244,3 +244,45 @@ def test_merge_and_summarize_duration(capsys):
     # Check avg open duration (2 and 4 days -> average 3.0)
     assert "Average Open Duration for Closed Issues : 3.0" in captured
 
+# Test that open_duration_days is calculated correctly
+def test_merge_and_summarize_duration(capsys):
+    # Prepare test DataFrames
+    df_commits = pd.DataFrame({
+        "sha": ["a", "b", "c", "d"],
+        "author": ["X", "Y", "X", "Z"],
+        "email": ["x@e", "y@e", "x@e", "z@e"],
+        "date": ["2025-01-01T00:00:00", "2025-01-01T01:00:00",
+                 "2025-01-02T00:00:00", "2025-01-02T01:00:00"],
+        "message": ["m1", "m2", "m3", "m4"]
+    })
+
+    df_issues = pd.DataFrame({
+        "id": [1,2,3],
+        "number": [101,102,103],
+        "title": ["I1","I2","I3"],
+        "user": ["u1","u2","u3"],
+        "state": ["closed","open","closed"],
+        "created_at": ["2025-01-01T00:00:00","2025-01-01T02:00:00","2025-01-02T00:00:00"],
+        "closed_at": ["2025-01-03T00:00:00", None, "2025-01-06T00:00:00"],
+        "comments": [0,1,2]
+    })
+
+    # Run summarize
+    merge_and_summarize(df_commits, df_issues)
+    captured = capsys.readouterr().out
+
+    # Count up the number of top committers
+    lines = captured.split("\n")
+    commits = []
+    is_committer = False
+
+    for line in lines :
+        if "Top 5 Committers" in line :
+            is_committer = True
+        elif "Issue Close Rate" in line :
+            is_committer = False
+        elif is_committer :
+            commits.append(line)
+
+    # Check that number of committers is less than 5
+    assert len(commits) == 4
