@@ -80,3 +80,13 @@ The new method in src/repo_miner.py file is accessible via CLI (in the following
 Example command :
 
     python -m src.repo_miner summarize --commits src/data/hello_world_commits.csv --issues src/data/hello_world_issues.csv
+
+Sample results :
+> Top 5 Committers : 
+> 	The Octocat: 1 commits
+> 	Johnneylee Jack Rollins: 1 commits
+> 	cameronmcefee: 1 commits
+> 
+> Issue Close Rate : 0.10
+> 
+> Average Open Duration for Closed Issues : 0.5
