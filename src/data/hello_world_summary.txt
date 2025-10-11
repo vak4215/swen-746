@@ -1,0 +1,8 @@
+Top 5 Committers : 
+	The Octocat: 1 commits
+	Johnneylee Jack Rollins: 1 commits
+	cameronmcefee: 1 commits
+
+Issue Close Rate : 0.10
+
+Average Open Duration for Closed Issues : 0.5

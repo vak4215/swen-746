@@ -26,14 +26,14 @@ The project now includes the following :
 
 The src/repo_miner.py file is accessible via CLI (in the following command, repo_miner is under src at the project root):
 
-    python -m src.repo_miner fetch-commits --repo owner/repo [--max 100] --out src/output/commits.csv
+    python -m src.repo_miner fetch-commits --repo owner/repo [--max 100] --out src/data/commits.csv
 
 
 Example command :
 
-    python -m src.repo_miner fetch-commits --repo vak4215/swen-746 --out src/output/commits.csv
+    python -m src.repo_miner fetch-commits --repo vak4215/swen-746 --out src/data/commits.csv
 
-    python -m src.repo_miner fetch-commits --repo octocat/Hello-World --out src/output/hello_world_commits.csv
+    python -m src.repo_miner fetch-commits --repo octocat/Hello-World --out src/data/hello_world_commits.csv
 
 
 
@@ -57,4 +57,36 @@ The new method in src/repo_miner.py file is accessible via CLI (in the following
 
 Example command :
 
-    python -m src.repo_miner fetch-issues --repo octocat/Hello-World --max 20 --out src/output/hello_world_issues.csv
+    python -m src.repo_miner fetch-issues --repo octocat/Hello-World --max 20 --out src/data/hello_world_issues.csv
+
+
+
+## Data Integration & Summary (Tag rm3 on 10/10)
+The project now includes the following :
+- The src/repo_miner.py file now contains an implementation of the merge_and_summarize(commits_df, issues_df) -> None function which :
+    - Joins commits and issues on date (e.g., by day or week).
+    - Computes and prints:
+        Top 5 committers by count.
+        Issue close rate (closed / total).
+        Average issue open duration.
+- Pytest cases for the merge_and_summarize function using monkeypatch to mimic a real world repo
+
+
+The new method in src/repo_miner.py file is accessible via CLI (in the following command, repo_miner is under src at the project root):
+
+    python -m src.repo_miner summarize --commits commits.csv --issues issues.csv
+
+
+Example command :
+
+    python -m src.repo_miner summarize --commits src/data/hello_world_commits.csv --issues src/data/hello_world_issues.csv
+
+Sample results :
+> Top 5 Committers : 
+> 	The Octocat: 1 commits
+> 	Johnneylee Jack Rollins: 1 commits
+> 	cameronmcefee: 1 commits
+> 
+> Issue Close Rate : 0.10
+> 
+> Average Open Duration for Closed Issues : 0.5
